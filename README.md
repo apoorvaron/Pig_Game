@@ -1,3 +1,3 @@
 # Pig_Game
-- Dual Player game.
+- Dual Player Game.
 - Live Site - https://apoorvaron.github.io/Pig_Game/
