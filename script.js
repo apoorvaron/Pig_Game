@@ -12,6 +12,11 @@ const diceEl = document.querySelector('.dice');
 const btnNew = document.querySelector('.btn--new');
 const btnRoll = document.querySelector('.btn--roll');
 const btnHold = document.querySelector('.btn--hold');
+const roll = new Audio("/sound/roll.wav");
+const hold = new Audio("/sound/hold.wav");
+const newGamesound = new Audio("/sound/newgame.wav");
+
+
 
 let scores, currentScore, activePlayer, playing,canroll;
 
@@ -49,6 +54,7 @@ const switchPlayer = function() {
 btnRoll.addEventListener('click', function() {
     if (playing && canroll) {
         canroll = false;
+        roll.play();
         // prevent user player from rolling die while animating
 
 
@@ -58,7 +64,6 @@ btnRoll.addEventListener('click', function() {
         // 2. Display dice
         diceEl.classList.remove('hidden');
         diceEl.src = `dice-${dice}.png`;
-
 
         // adding delay for animation;
         setTimeout(()=>{
@@ -81,6 +86,7 @@ btnRoll.addEventListener('click', function() {
 
 btnHold.addEventListener('click', function() {
     if (playing) {
+        hold.play();
         // 1. Add current score to active player's score
         scores[activePlayer] += currentScore;
         // scores[1] = scores[1] + currentScore
@@ -107,4 +113,7 @@ btnHold.addEventListener('click', function() {
     }
 });
 
-btnNew.addEventListener('click', init);
+btnNew.addEventListener('click', ()=>{
+    newGamesound.play();
+    init();
+});
