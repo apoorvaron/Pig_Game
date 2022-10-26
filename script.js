@@ -12,8 +12,13 @@ const diceEl = document.querySelector('.dice');
 const btnNew = document.querySelector('.btn--new');
 const btnRoll = document.querySelector('.btn--roll');
 const btnHold = document.querySelector('.btn--hold');
+const roll = new Audio("/sound/roll.wav");
+const hold = new Audio("/sound/hold.wav");
+const newGamesound = new Audio("/sound/newgame.wav");
 
-let scores, currentScore, activePlayer, playing;
+
+
+let scores, currentScore, activePlayer, playing,canroll;
 
 // Starting conditions
 const init = function() {
@@ -21,6 +26,8 @@ const init = function() {
     currentScore = 0;
     activePlayer = 0;
     playing = true;
+    canroll = true;
+
 
     score0El.textContent = 0;
     score1El.textContent = 0;
@@ -45,29 +52,41 @@ const switchPlayer = function() {
 
 // Rolling dice functionality
 btnRoll.addEventListener('click', function() {
-    if (playing) {
+    if (playing && canroll) {
+        canroll = false;
+        roll.play();
+        // prevent user player from rolling die while animating
+
+
+        diceEl.classList.add('rotate');
         // 1. Generating a random dice roll
         const dice = Math.trunc(Math.random() * 6) + 1;
-
         // 2. Display dice
         diceEl.classList.remove('hidden');
         diceEl.src = `dice-${dice}.png`;
 
-        // 3. Check for rolled 1
-        if (dice !== 1) {
-            // Add dice to current score
-            currentScore += dice;
-            document.getElementById(`current--${activePlayer}`).textContent =
-                currentScore;
-        } else {
-            // Switch to next player
-            switchPlayer();
-        }
+        // adding delay for animation;
+        setTimeout(()=>{
+    
+            // 3. Check for rolled 1
+            if (dice !== 1) {
+                // Add dice to current score
+                currentScore += dice;
+                document.getElementById(`current--${activePlayer}`).textContent =
+                    currentScore;
+            } else {
+                // Switch to next player
+                switchPlayer();
+            }
+            diceEl.classList.remove('rotate');  
+            canroll = true;
+        },1000);
     }
 });
 
 btnHold.addEventListener('click', function() {
     if (playing) {
+        hold.play();
         // 1. Add current score to active player's score
         scores[activePlayer] += currentScore;
         // scores[1] = scores[1] + currentScore
@@ -94,4 +113,7 @@ btnHold.addEventListener('click', function() {
     }
 });
 
-btnNew.addEventListener('click', init);
+btnNew.addEventListener('click', ()=>{
+    newGamesound.play();
+    init();
+});
