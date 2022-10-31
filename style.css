@@ -18,7 +18,10 @@ html--main {
   box-sizing: border-box;
 }
 
-
+html1--ayush {
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
 body {
   font-family: 'Nunito', sans-serif;
   font-weight: 400;
